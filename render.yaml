@@ -1,5 +1,6 @@
 # Unai on Render — LibreChat fork
 # Web app + private MongoDB with a persistent disk.
+# Service names include the Blueprint suffix (-kxqc) used by this workspace.
 
 services:
   - type: web
@@ -19,11 +20,11 @@ services:
       - key: ALLOW_REGISTRATION
         value: "true"
       - key: DOMAIN_CLIENT
-        value: https://unai.onrender.com
+        value: https://unai-kxqc.onrender.com
       - key: DOMAIN_SERVER
-        value: https://unai.onrender.com
+        value: https://unai-kxqc.onrender.com
       - key: MONGO_URI
-        value: mongodb://unai-mongo:27017/Unai
+        value: mongodb://unai-mongo-kxqc:27017/Unai
       - key: OPENAI_API_KEY
         value: user_provided
       - key: ANTHROPIC_API_KEY
@@ -44,6 +45,7 @@ services:
     runtime: image
     plan: starter
     region: oregon
+    dockerCommand: mongod --bind_ip_all --port 27017
     disk:
       name: unai-mongo-data
       mountPath: /data/db
