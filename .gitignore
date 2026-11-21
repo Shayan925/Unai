@@ -202,3 +202,7 @@ scripts/activity-labels/results/
 .stryker-tmp/
 
 .render-creds.json
+
+# Tracked deploy config and Compose override for LiteLLM
+!deploy/librechat.yaml
+!docker-compose.override.yml

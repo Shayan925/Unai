@@ -1,0 +1,22 @@
+# Unai deploy config — LibreChat + LiteLLM gateway
+# https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/litellm
+
+version: 1.3.19
+cache: true
+
+interface:
+  customWelcome: 'Welcome to Unai! Enjoy your experience.'
+
+endpoints:
+  custom:
+    - name: 'LiteLLM'
+      apiKey: '${LITELLM_API_KEY}'
+      # Docker Compose: http://litellm:8000/v1
+      # Render private network: set LITELLM_BASE_URL (e.g. http://unai-litellm-kxqc:4000/v1)
+      baseURL: '${LITELLM_BASE_URL}'
+      models:
+        default: ['gpt-4o-mini']
+        fetch: true
+      titleConvo: true
+      titleModel: 'gpt-4o-mini'
+      modelDisplayLabel: 'LiteLLM'

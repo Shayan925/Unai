@@ -1,0 +1,27 @@
+# Unai + LiteLLM — merged automatically with docker-compose.yml
+# Docs: https://www.librechat.ai/docs/configuration/litellm
+#       https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/litellm
+
+services:
+  api:
+    volumes:
+      - type: bind
+        source: ./librechat.yaml
+        target: /app/librechat.yaml
+    environment:
+      - LITELLM_BASE_URL=http://litellm:8000/v1
+      - LITELLM_API_KEY=${LITELLM_MASTER_KEY}
+
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    volumes:
+      - ./litellm/litellm-config.yaml:/app/config.yaml
+    ports:
+      - "4000:8000"
+    command: ["--config", "/app/config.yaml", "--port", "8000", "--num_workers", "4"]
+    environment:
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    restart: always
