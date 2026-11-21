@@ -1,17 +1,15 @@
-# Unai on Render — LibreChat fork
-# Web app + private MongoDB with a persistent disk.
-# Service names include the Blueprint suffix (-kxqc) used by this workspace.
+# Unai on Render — LibreChat + LiteLLM proxy + MongoDB
 
 services:
   - type: web
     name: unai
-    runtime: image
+    runtime: docker
     plan: starter
     region: oregon
     autoDeployTrigger: commit
     healthCheckPath: /health
-    image:
-      url: registry.librechat.ai/librechat-ai/librechat-dev:latest
+    dockerfilePath: ./Dockerfile.unai
+    dockerContext: .
     envVars:
       - key: HOST
         value: 0.0.0.0
@@ -25,6 +23,13 @@ services:
         value: https://unai-kxqc.onrender.com
       - key: MONGO_URI
         value: mongodb://unai-mongo-kxqc:27017/Unai
+      - key: LITELLM_BASE_URL
+        value: http://unai-litellm-kxqc:4000/v1
+      - key: LITELLM_API_KEY
+        fromService:
+          name: unai-litellm
+          type: pserv
+          envVarKey: LITELLM_MASTER_KEY
       - key: OPENAI_API_KEY
         value: user_provided
       - key: ANTHROPIC_API_KEY
@@ -38,6 +43,25 @@ services:
       - key: CREDS_KEY
         sync: false
       - key: CREDS_IV
+        sync: false
+      - key: PORT
+        value: "10000"
+
+  - type: pserv
+    name: unai-litellm
+    runtime: docker
+    plan: starter
+    region: oregon
+    dockerfilePath: ./Dockerfile.litellm
+    dockerContext: .
+    envVars:
+      - key: LITELLM_MASTER_KEY
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
         sync: false
 
   - type: pserv

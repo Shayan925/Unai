@@ -216,7 +216,7 @@ projects:
 
 # Custom interface configuration
 interface:
-  customWelcome: 'Welcome to LibreChat! Enjoy your experience.'
+  customWelcome: 'Welcome to Unai! Enjoy your experience.'
   # What heads the welcome screen when an agent, assistant or model spec is selected (default: entity).
   # 'entity' shows its name and icon; 'greeting' shows the time-of-day greeting (or customWelcome) with
   # the user's name and no icon, for deployments where the header selector already shows the agent.
@@ -277,13 +277,13 @@ interface:
     externalUrl: 'https://librechat.ai/tos'
     openNewTab: true
     modalAcceptance: true
-    modalTitle: 'Terms of Service for LibreChat'
+    modalTitle: 'Terms of Service for Unai'
     modalContent: |
-      # Terms and Conditions for LibreChat
+      # Terms and Conditions for Unai
 
       *Effective Date: February 18, 2024*
 
-      Welcome to LibreChat, the informational website for the open-source AI chat platform, available at https://librechat.ai. These Terms of Service ("Terms") govern your use of our website and the services we offer. By accessing or using the Website, you agree to be bound by these Terms and our Privacy Policy, accessible at https://librechat.ai//privacy.
+      Welcome to Unai, the informational website for the open-source AI chat platform, available at https://librechat.ai. These Terms of Service ("Terms") govern your use of our website and the services we offer. By accessing or using the Website, you agree to be bound by these Terms and our Privacy Policy, accessible at https://librechat.ai//privacy.
 
       ## 1. Ownership
 
@@ -1313,6 +1313,20 @@ endpoints:
   #     #     deploymentName: claude-3-5-haiku@20241022  # Override for this model
 
   custom:
+    # LiteLLM proxy gateway — route many providers through one OpenAI-compatible endpoint.
+    # https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/litellm
+    # Docker Compose (this repo's override): http://litellm:8000/v1
+    # Local host networking: http://localhost:4000/v1
+    - name: 'LiteLLM'
+      apiKey: '${LITELLM_API_KEY}'
+      baseURL: '${LITELLM_BASE_URL}'
+      models:
+        default: ['gpt-4o-mini']
+        fetch: true
+      titleConvo: true
+      titleModel: 'gpt-4o-mini'
+      modelDisplayLabel: 'LiteLLM'
+
     # xAI: Grok 4.7 uses the existing OpenAI-compatible chat and agent paths.
     # https://docs.x.ai/developers/grok-4-7
     # Set XAI_API_KEY in your environment. No separate SpaceXAI provider is needed.
