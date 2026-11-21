@@ -1,5 +1,6 @@
 # LiteLLM proxy with Unai model routes.
 FROM ghcr.io/berriai/litellm:main-latest
 COPY litellm/litellm-config.yaml /app/config.yaml
-EXPOSE 4000
-CMD ["--config", "/app/config.yaml", "--port", "4000", "--num_workers", "4"]
+# Render private services expect the process to listen on PORT (default 10000).
+EXPOSE 10000
+CMD ["--config", "/app/config.yaml", "--port", "10000", "--num_workers", "1"]

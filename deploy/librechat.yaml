@@ -12,7 +12,7 @@ endpoints:
     - name: 'LiteLLM'
       apiKey: '${LITELLM_API_KEY}'
       # Docker Compose: http://litellm:8000/v1
-      # Render private network: set LITELLM_BASE_URL (e.g. http://unai-litellm-kxqc:4000/v1)
+      # Render private network: set LITELLM_BASE_URL (e.g. http://unai-litellm-kxqc:10000/v1)
       baseURL: '${LITELLM_BASE_URL}'
       models:
         default: ['gpt-4o-mini']

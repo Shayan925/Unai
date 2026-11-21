@@ -24,7 +24,7 @@ services:
       - key: MONGO_URI
         value: mongodb://unai-mongo-kxqc:27017/Unai
       - key: LITELLM_BASE_URL
-        value: http://unai-litellm-kxqc:4000/v1
+        value: http://unai-litellm-kxqc:10000/v1
       - key: LITELLM_API_KEY
         fromService:
           name: unai-litellm
@@ -50,7 +50,8 @@ services:
   - type: pserv
     name: unai-litellm
     runtime: docker
-    plan: starter
+    # LiteLLM needs >512Mi; starter OOM'd at boot.
+    plan: 1c-2g
     region: oregon
     dockerfilePath: ./Dockerfile.litellm
     dockerContext: .
