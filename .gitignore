@@ -200,3 +200,5 @@ scripts/activity-labels/results/
 
 # Mutation testing sandboxes
 .stryker-tmp/
+
+.render-creds.json

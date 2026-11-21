@@ -1,0 +1,52 @@
+# Unai on Render — LibreChat fork
+# Provisions the web app plus a private MongoDB with a persistent disk.
+
+services:
+  - type: web
+    name: unai
+    runtime: image
+    plan: starter
+    region: oregon
+    autoDeployTrigger: commit
+    healthCheckPath: /health
+    image:
+      url: registry.librechat.ai/librechat-ai/librechat-dev:latest
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: APP_TITLE
+        value: Unai
+      - key: ALLOW_REGISTRATION
+        value: "true"
+      - key: DOMAIN_CLIENT
+        value: https://unai.onrender.com
+      - key: DOMAIN_SERVER
+        value: https://unai.onrender.com
+      - key: MONGO_URI
+        value: mongodb://unai-mongo:27017/Unai
+      - key: OPENAI_API_KEY
+        value: user_provided
+      - key: ANTHROPIC_API_KEY
+        value: user_provided
+      - key: GOOGLE_KEY
+        value: user_provided
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: CREDS_KEY
+        sync: false
+      - key: CREDS_IV
+        sync: false
+
+  - type: pserv
+    name: unai-mongo
+    runtime: image
+    plan: starter
+    region: oregon
+    disk:
+      name: unai-mongo-data
+      mountPath: /data/db
+      sizeGB: 10
+    image:
+      url: docker.io/library/mongo:8.0.20
